@@ -1,0 +1,13 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+packages/shared/src/*.js
+packages/shared/src/*.js.map
+packages/shared/src/*.d.ts
+packages/shared/src/*.d.ts.map
+.env
+.env.*
+!.env.example
+npm-debug.log*
+.DS_Store

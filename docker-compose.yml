@@ -1,0 +1,94 @@
+name: notas-do-thiago
+
+services:
+  # ----------------------------- perfil dev -----------------------------
+  api:
+    profiles: [dev]
+    build: &build
+      context: .
+      target: build
+      args:
+        SITE_URL: ${SITE_URL:-http://localhost:3000}
+        DOMAIN: ${DOMAIN:-localhost}
+        SITE_TITLE: ${SITE_TITLE:-Notas do Thiago}
+        SITE_DESCRIPTION: ${SITE_DESCRIPTION:-Notas técnicas sobre desenvolvimento de software, escritas por Thiago.}
+    command: npm run dev -w apps/api
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      SITE_URL: http://localhost:3000
+      DOMAIN: localhost
+      SITE_TITLE: ${SITE_TITLE:-Notas do Thiago}
+      SITE_DESCRIPTION: ${SITE_DESCRIPTION:-Notas técnicas sobre desenvolvimento de software, escritas por Thiago.}
+    volumes:
+      - ./content:/app/content
+      - ./apps/api/src:/app/apps/api/src
+    ports:
+      - '${API_PORT:-3000}:3000'
+
+  web:
+    profiles: [dev]
+    build: *build
+    command: npm run dev -w apps/web -- --host 0.0.0.0
+    environment:
+      VITE_API_PROXY_TARGET: http://api:3000
+    volumes:
+      - ./apps/web:/app/apps/web
+      - /app/apps/web/node_modules
+    ports:
+      - '${WEB_PORT:-5173}:5173'
+    depends_on:
+      - api
+
+  # ----------------------------- perfil prod ----------------------------
+  app:
+    profiles: [prod]
+    build:
+      context: .
+      target: runtime
+      args:
+        SITE_URL: ${SITE_URL:-https://${DOMAIN:-localhost}}
+        DOMAIN: ${DOMAIN:-localhost}
+        SITE_TITLE: ${SITE_TITLE:-Notas do Thiago}
+        SITE_DESCRIPTION: ${SITE_DESCRIPTION:-Notas técnicas sobre desenvolvimento de software, escritas por Thiago.}
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      SITE_URL: ${SITE_URL:-https://${DOMAIN:-localhost}}
+      DOMAIN: ${DOMAIN:-localhost}
+      SITE_TITLE: ${SITE_TITLE:-Notas do Thiago}
+      SITE_DESCRIPTION: ${SITE_DESCRIPTION:-Notas técnicas sobre desenvolvimento de software, escritas por Thiago.}
+    ports:
+      - '${API_PORT:-3000}:3000'
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000/health').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  caddy:
+    profiles: [prod]
+    image: caddy:2-alpine
+    ports:
+      - '${HTTP_PORT:-80}:80'
+      - '${HTTPS_PORT:-443}:443'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      DOMAIN: ${DOMAIN:-localhost}
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:

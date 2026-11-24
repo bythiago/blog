@@ -1,0 +1,27 @@
+{
+  "name": "@blog/shared",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Schemas, tipos e utilitários compartilhados do Notas do Thiago",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./parser": {
+      "types": "./dist/parser.d.ts",
+      "default": "./dist/parser.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "zod": "^3.25.76"
+  }
+}

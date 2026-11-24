@@ -1,0 +1,12 @@
+# Domínio injetado pelo docker-compose.yml (variável DOMAIN).
+# Domínio real: Caddy emite e renova certificado Let's Encrypt automaticamente.
+# DOMAIN=localhost: Caddy usa a CA interna (TLS autoassinado) para testes locais.
+{$DOMAIN:localhost} {
+	encode zstd gzip
+
+	reverse_proxy app:3000
+
+	log {
+		output stdout
+	}
+}

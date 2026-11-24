@@ -1,0 +1,14 @@
+node_modules
+**/node_modules
+dist
+**/dist
+.git
+.env
+.env.*
+coverage
+**/coverage
+*.tsbuildinfo
+**/*.tsbuildinfo
+npm-debug.log*
+**/npm-debug.log*
+.DS_Store

@@ -1,0 +1,139 @@
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/fraunces/600.css';
+@import '@fontsource/fraunces/700.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-paper font-sans text-ink antialiased dark:bg-night dark:text-night-ink;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-paper dark:ring-offset-night;
+  }
+
+  ::selection {
+    @apply bg-accent-soft text-accent-strong dark:bg-accent/30 dark:text-night-ink;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-5xl px-5 sm:px-8;
+  }
+
+  .surface-card {
+    @apply rounded-lg border border-line bg-surface dark:border-night-line dark:bg-night-surface;
+  }
+
+  .text-link {
+    @apply text-accent-strong underline-offset-4 hover:underline dark:text-indigo-300;
+  }
+
+  .skip-link {
+    @apply absolute left-4 top-4 z-50 -translate-y-24 rounded-lg bg-accent px-4 py-2 font-medium text-white transition-transform;
+  }
+
+  .skip-link:focus {
+    @apply translate-y-0;
+  }
+}
+
+/* Corpo renderizado dos Posts (Markdown). */
+.prose-blog {
+  @apply text-[1.0625rem] leading-8 text-zinc-700 dark:text-zinc-300;
+}
+.prose-blog > * + * {
+  @apply mt-5;
+}
+.prose-blog h2 {
+  @apply mb-3 mt-10 font-serif text-2xl font-semibold tracking-tight text-ink dark:text-night-ink;
+}
+.prose-blog h3 {
+  @apply mb-2 mt-8 font-serif text-xl font-semibold text-ink dark:text-night-ink;
+}
+.prose-blog a {
+  @apply text-link;
+}
+.prose-blog strong {
+  @apply font-semibold text-ink dark:text-night-ink;
+}
+.prose-blog ul {
+  @apply list-disc space-y-1 pl-6;
+}
+.prose-blog ol {
+  @apply list-decimal space-y-1 pl-6;
+}
+.prose-blog blockquote {
+  @apply border-l-4 border-accent pl-4 italic text-muted dark:text-night-muted;
+}
+.prose-blog img {
+  @apply h-auto w-full rounded-lg border border-line dark:border-night-line;
+}
+.prose-blog table {
+  @apply w-full border-collapse overflow-hidden text-sm;
+}
+.prose-blog th,
+.prose-blog td {
+  @apply border border-line px-3 py-2 text-left dark:border-night-line;
+}
+.prose-blog th {
+  @apply bg-paper font-semibold text-ink dark:bg-night-surface dark:text-night-ink;
+}
+.prose-blog hr {
+  @apply border-line dark:border-night-line;
+}
+
+/* Tokens do rehype-highlight (sanitizados via schema customizado). */
+.hljs-comment,
+.hljs-quote {
+  @apply italic text-zinc-500;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-type {
+  @apply text-violet-700 dark:text-violet-300;
+}
+.hljs-string,
+.hljs-attr,
+.hljs-attribute,
+.hljs-regexp {
+  @apply text-emerald-700 dark:text-emerald-300;
+}
+.hljs-number,
+.hljs-built_in,
+.hljs-symbol {
+  @apply text-amber-700 dark:text-amber-300;
+}
+.hljs-title,
+.hljs-title.function_,
+.hljs-name,
+.hljs-section {
+  @apply text-blue-700 dark:text-blue-300;
+}
+.hljs-variable,
+.hljs-template-variable,
+.hljs-params {
+  @apply text-rose-700 dark:text-rose-300;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
