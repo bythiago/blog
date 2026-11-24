@@ -14,6 +14,7 @@
     "build:web": "npm run build --workspace @blog/web",
     "build:og": "TSX_TSCONFIG_PATH=apps/web/tsconfig.json tsx scripts/og-image.ts",
     "build:pages": "TSX_TSCONFIG_PATH=apps/web/tsconfig.json tsx scripts/prerender.ts && TSX_TSCONFIG_PATH=apps/web/tsconfig.json tsx scripts/feed.ts",
+    "pretest": "npm run build:types",
     "test": "vitest run",
     "content:check": "tsx scripts/content-check.ts",
     "post:random": "tsx scripts/random-post.ts",
